@@ -40,6 +40,7 @@ return [
         'client_id' => env('NOMBA_CLIENT_ID'),
         'client_secret' => env('NOMBA_CLIENT_SECRET'),
         'account_id' => env('NOMBA_ACCOUNT_ID'),
+        'sub_account_id' => env('NOMBA_SUB_ACCOUNT_ID'),
         'webhook_secret' => env('NOMBA_WEBHOOK_SECRET'),
     ],
 

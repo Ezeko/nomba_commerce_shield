@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: nomba-commerce-shield
+    env: php
+    plan: free
+    buildCommand: chmod +x render-build.sh && ./render-build.sh
+    startCommand: heroku-php-apache2 public/
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: database/database.sqlite
+      # Nomba credentials should be set manually in the Render Dashboard under Environment Variables

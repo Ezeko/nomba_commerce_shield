@@ -6,7 +6,7 @@
                     {{ __('Merchant Hub') }} — <span class="text-teal-400 font-bold">{{ $store->name }}</span>
                 </h2>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Store URL: <a href="{{ route('storefront.store', $store->slug) }}" target="_blank" class="text-indigo-400 hover:underline">commerce.ng/store/{{ $store->slug }} ↗</a>
+                    Store URL: <a href="{{ route('storefront.store', $store->slug) }}" target="_blank" class="text-indigo-400 hover:underline">{{ str_replace(['http://', 'https://'], '', route('storefront.store', $store->slug)) }} ↗</a>
                 </p>
             </div>
             

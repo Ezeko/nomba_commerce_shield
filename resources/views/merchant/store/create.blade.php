@@ -33,7 +33,7 @@
                              <x-input-label for="slug" :value="__('Store URL Slug')" />
                              <div class="flex items-center mt-1">
                                  <span class="inline-flex items-center px-3 py-2 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-500 text-sm">
-                                     commerce.ng/store/
+                                     {{ str_replace(['http://', 'https://'], '', url('/store')) }}/
                                  </span>
                                  <x-text-input id="slug" class="block w-full rounded-l-none" type="text" name="slug" :value="old('slug')" required placeholder="ezekiels-thrift" />
                              </div>

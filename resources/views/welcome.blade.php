@@ -23,9 +23,7 @@
         <header class="relative border-b border-slate-800/80 backdrop-blur-md bg-slate-950/70 sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-teal-400 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/25">
-                        N
-                    </div>
+                    <img src="{{ asset('logo.png') }}" alt="Nomba Commerce Shield Logo" class="w-10 h-10 rounded-xl object-cover shadow-lg shadow-indigo-500/25">
                     <span class="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">
                         Nomba Commerce <span class="text-teal-400">Shield</span>
                     </span>
@@ -170,7 +168,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-xs text-slate-500">STOREFRONT URL</p>
-                                    <p class="text-sm font-semibold text-slate-300">commerce.ng/store/fashion-hub</p>
+                                    <p class="text-sm font-semibold text-slate-300">{{ str_replace(['http://', 'https://'], '', url('/store/fashion-hub')) }}</p>
                                 </div>
                                 <div class="px-3 py-1.5 rounded-full bg-teal-400/10 text-teal-400 border border-teal-400/20 text-xs font-bold">
                                     Trust Score: 98
