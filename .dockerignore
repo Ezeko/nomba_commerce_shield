@@ -1,0 +1,17 @@
+/node_modules
+/vendor
+.git
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+/storage/*.key
+/public/storage
+/public/build
+/database/*.sqlite
+/database/*.sqlite-journal
+/tests
+Dockerfile
+.dockerignore
+entrypoint.sh
+render.yaml
