@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('virtual_account_number')->nullable();
             $table->string('virtual_account_bank')->nullable();
             $table->string('virtual_account_name')->nullable();
+            $table->bigInteger('balance')->default(0);
             $table->integer('trust_score')->default(100);
             $table->json('settings')->nullable();
             $table->timestamps();

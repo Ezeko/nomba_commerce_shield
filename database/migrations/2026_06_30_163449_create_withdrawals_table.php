@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('withdrawals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('store_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('slug');
-            $table->text('description')->nullable();
-            $table->bigInteger('price');
-            $table->string('image_url')->nullable();
-            $table->integer('stock')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->bigInteger('amount');
+            $table->string('bank_code');
+            $table->string('bank_name');
+            $table->string('account_number');
+            $table->string('account_name');
+            $table->string('status')->default('pending'); // pending, success, failed
+            $table->string('reference')->unique();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('withdrawals');
     }
 };

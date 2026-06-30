@@ -97,28 +97,28 @@
 
             <!-- Analytics Statistics Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
+                <!-- Card 1: Wallet Balance -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Wallet Balance</p>
+                    <p class="text-2xl font-black text-indigo-500 mt-2">₦{{ number_format($store->balance, 2) }}</p>
+                    <p class="text-[10px] text-emerald-500 font-medium mt-1">Available for Payout</p>
+                </div>
+
+                <!-- Card 2: Revenue Today -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Revenue Today</p>
                     <p class="text-2xl font-black text-gray-900 dark:text-white mt-2">₦{{ number_format($revenueToday, 2) }}</p>
-                    <p class="text-[10px] text-emerald-500 font-medium mt-1">Released & Settled</p>
+                    <p class="text-[10px] text-gray-500 mt-1">Today's Settled Sales</p>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Revenue This Week</p>
-                    <p class="text-2xl font-black text-gray-900 dark:text-white mt-2">₦{{ number_format($revenueThisWeek, 2) }}</p>
-                    <p class="text-[10px] text-emerald-500 font-medium mt-1">Released & Settled</p>
-                </div>
-
-                <!-- Card 3 -->
+                <!-- Card 3: Escrow Balance -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Escrow Balance</p>
                     <p class="text-2xl font-black text-teal-400 mt-2">₦{{ number_format($escrowFundsLocked, 2) }}</p>
                     <p class="text-[10px] text-amber-500 font-medium mt-1">Locked awaiting delivery</p>
                 </div>
 
-                <!-- Card 4 -->
+                <!-- Card 4: Completed Orders -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Completed Orders</p>
                     <p class="text-2xl font-black text-gray-900 dark:text-white mt-2">{{ $completedOrdersCount }}</p>

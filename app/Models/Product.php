@@ -20,7 +20,7 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'price' => \App\Casts\MoneyCast::class,
         'is_active' => 'boolean',
         'stock' => 'integer',
     ];

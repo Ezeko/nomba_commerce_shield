@@ -17,6 +17,7 @@ class Store extends Model
         'virtual_account_number',
         'virtual_account_bank',
         'virtual_account_name',
+        'balance',
         'trust_score',
         'settings',
     ];
@@ -24,6 +25,7 @@ class Store extends Model
     protected $casts = [
         'settings' => 'array',
         'trust_score' => 'integer',
+        'balance' => \App\Casts\MoneyCast::class,
     ];
 
     /**
@@ -56,5 +58,13 @@ class Store extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the withdrawals made by the store.
+     */
+    public function withdrawals(): HasMany
+    {
+        return $this->hasMany(Withdrawal::class);
     }
 }

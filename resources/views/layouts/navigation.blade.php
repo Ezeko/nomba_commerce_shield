@@ -22,6 +22,9 @@
                         <x-nav-link :href="route('merchant.orders.index')" :active="request()->routeIs('merchant.orders.*')">
                             {{ __('Orders') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('merchant.withdraw.create')" :active="request()->routeIs('merchant.withdraw.*')">
+                            {{ __('Withdraw') }}
+                        </x-nav-link>
                         <a href="{{ route('storefront.store', Auth::user()->store->slug) }}" target="_blank" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-teal-400 hover:text-teal-300 focus:outline-none transition duration-150 ease-in-out">
                             {{ __('View Store ↗') }}
                         </a>
@@ -87,6 +90,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('merchant.orders.index')" :active="request()->routeIs('merchant.orders.*')">
                     {{ __('Orders') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('merchant.withdraw.create')" :active="request()->routeIs('merchant.withdraw.*')">
+                    {{ __('Withdraw') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('storefront.store', Auth::user()->store->slug)" target="_blank">
                     <span class="text-teal-400 font-medium">{{ __('View Store ↗') }}</span>
