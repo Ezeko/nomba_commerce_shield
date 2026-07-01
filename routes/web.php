@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-// use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\StorefrontController;
 use App\Http\Controllers\Merchant\DashboardController;
 use App\Http\Controllers\Merchant\ProductController;
@@ -14,11 +14,11 @@ Route::get('/', function () {
 });
 
 // Nomba Webhook (Excluded from CSRF in bootstrap/app.php)
-// Route::post('/webhooks/nomba', [WebhookController::class, 'handle'])->name('webhooks.nomba');
+Route::post('/webhooks/nomba', [WebhookController::class, 'handle'])->name('webhooks.nomba');
 
 // Demo & Simulation Routes
-// Route::get('/demo/checkout', [WebhookController::class, 'demoCheckoutView'])->name('demo.nomba.checkout');
-// Route::post('/demo/webhook/trigger', [WebhookController::class, 'triggerDemoWebhook'])->name('demo.webhook.trigger');
+Route::get('/demo/checkout', [WebhookController::class, 'demoCheckoutView'])->name('demo.nomba.checkout');
+Route::post('/demo/webhook/trigger', [WebhookController::class, 'triggerDemoWebhook'])->name('demo.webhook.trigger');
 
 // Public Storefront Routes
 Route::get('/store/{slug}', [StorefrontController::class, 'showStore'])->name('storefront.store');

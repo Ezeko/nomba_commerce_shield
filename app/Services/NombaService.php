@@ -81,7 +81,7 @@ class NombaService
 
         if ($token) {
             $headers['Authorization'] = 'Bearer ' . $token;
-            $headers['accountId'] = $this->accountId;
+            $headers['accountId'] = $this->subAccountId ?? $this->accountId;
         } else {
             Log::warning('NombaService: Token is null. Sending request in unauthenticated sandbox mode.');
         }
