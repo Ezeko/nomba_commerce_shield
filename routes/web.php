@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 // use App\Http\Controllers\WebhookController;
-// use App\Http\Controllers\StorefrontController;
+use App\Http\Controllers\StorefrontController;
 use App\Http\Controllers\Merchant\DashboardController;
 use App\Http\Controllers\Merchant\ProductController;
 use App\Http\Controllers\Merchant\WithdrawalController;
@@ -21,12 +21,12 @@ Route::get('/', function () {
 // Route::post('/demo/webhook/trigger', [WebhookController::class, 'triggerDemoWebhook'])->name('demo.webhook.trigger');
 
 // Public Storefront Routes
-// Route::get('/store/{slug}', [StorefrontController::class, 'showStore'])->name('storefront.store');
-// Route::get('/store/{slug}/checkout', [StorefrontController::class, 'checkout'])->name('storefront.checkout');
-// Route::post('/store/{slug}/order', [StorefrontController::class, 'placeOrder'])->name('storefront.order');
-// Route::get('/orders/{orderNumber}/track', [StorefrontController::class, 'trackOrder'])->name('orders.track');
-// Route::post('/orders/{orderNumber}/confirm', [StorefrontController::class, 'confirmReceipt'])->name('orders.confirm');
-// Route::post('/orders/{orderNumber}/dispute', [StorefrontController::class, 'disputeOrder'])->name('orders.dispute');
+Route::get('/store/{slug}', [StorefrontController::class, 'showStore'])->name('storefront.store');
+Route::get('/store/{slug}/checkout', [StorefrontController::class, 'checkout'])->name('storefront.checkout');
+Route::post('/store/{slug}/order', [StorefrontController::class, 'placeOrder'])->name('storefront.order');
+Route::get('/orders/{orderNumber}/track', [StorefrontController::class, 'trackOrder'])->name('orders.track');
+Route::post('/orders/{orderNumber}/confirm', [StorefrontController::class, 'confirmReceipt'])->name('orders.confirm');
+Route::post('/orders/{orderNumber}/dispute', [StorefrontController::class, 'disputeOrder'])->name('orders.dispute');
 
 // Redirect default dashboard to merchant dashboard
 Route::get('/dashboard', function () {
