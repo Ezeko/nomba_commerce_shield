@@ -1,8 +1,16 @@
 #!/bin/sh
 
-# Ensure storage and bootstrap/cache directories are writable by Apache
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+# Ensure storage and bootstrap/cache directories exist
+mkdir -p /var/www/html/storage/database /var/www/html/bootstrap/cache
+
+# Create SQLite database file inside storage/database if it doesn't exist
+if [ ! -f /var/www/html/storage/database/database.sqlite ]; then
+    touch /var/www/html/storage/database/database.sqlite
+fi
+
+# Set correct permissions
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Run database migrations in production
 php artisan migrate --force

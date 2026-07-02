@@ -15,5 +15,5 @@ services:
       - key: DB_CONNECTION
         value: sqlite
       - key: DB_DATABASE
-        value: database/database.sqlite
+        value: storage/database/database.sqlite
       # Nomba credentials should be set manually in the Render Dashboard under Environment Variables
