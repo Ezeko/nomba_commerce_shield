@@ -23,5 +23,11 @@ php artisan migrate --force
     done
 ) &
 
+# Configure Apache to listen on Render's dynamic PORT
+if [ -n "$PORT" ]; then
+    sed -i "s/Listen 80/Listen $PORT/g" /etc/apache2/ports.conf
+    sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:$PORT>/g" /etc/apache2/sites-available/000-default.conf
+fi
+
 # Start Apache in the foreground
 exec apache2-foreground
