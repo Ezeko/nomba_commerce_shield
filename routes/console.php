@@ -10,6 +10,6 @@ Artisan::command('inspire', function () {
 
 // Background job to retry provisioning Nomba Virtual Accounts for stores
 Schedule::command('stores:provision-virtual-accounts')
-    ->everyFiveMinutes()
+    ->everyMinute()
     ->runInBackground()
     ->appendOutputTo(storage_path('logs/virtual_accounts_provisioning.log'));

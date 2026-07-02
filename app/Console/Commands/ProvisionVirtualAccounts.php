@@ -31,8 +31,10 @@ class ProvisionVirtualAccounts extends Command
         Log::info('stores:provision-virtual-accounts: Starting background provisioning...');
         $this->info('Starting virtual account provisioning for stores...');
 
-        // Find stores that do not have a virtual account number
-        $stores = Store::whereNull('virtual_account_number')->get();
+        // Find stores that do not have a virtual account number and were created at least 10 minutes ago
+        $stores = Store::whereNull('virtual_account_number')
+            ->where('created_at', '<=', now()->subMinutes(10))
+            ->get();
 
         if ($stores->isEmpty()) {
             $this->info('No stores require virtual account provisioning.');

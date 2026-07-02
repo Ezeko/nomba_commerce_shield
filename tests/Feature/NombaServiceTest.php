@@ -126,7 +126,7 @@ class NombaServiceTest extends TestCase
         Http::assertSent(function ($request) {
             return $request->url() === 'https://sandbox.nomba.com/v1/accounts/virtual'
                 && $request['accountName'] === 'NCS - Test Store'
-                && $request->hasHeader('accountId', 'test-account-id');
+                && $request->hasHeader('accountId', 'test-sub-account-id');
         });
     }
 
