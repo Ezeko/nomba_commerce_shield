@@ -96,6 +96,37 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // 2. Weekly Sales Chart Data (last 7 days)
+        $chartData = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::now()->subDays($i);
+            $dayLabel = $date->format('D, M d');
+            
+            $revenue = Order::where('store_id', $store->id)
+                ->where('payment_status', 'paid')
+                ->whereDate('updated_at', $date->toDateString())
+                ->where(function ($query) {
+                    $query->where('payment_method', 'standard')
+                          ->orWhereHas('escrow', function ($q) {
+                              $q->where('status', 'released');
+                          });
+                })
+                ->sum('total_amount');
+                
+            $escrowLocked = Order::where('store_id', $store->id)
+                ->whereDate('created_at', $date->toDateString())
+                ->whereHas('escrow', function ($q) {
+                    $q->whereIn('status', ['held', 'shipped', 'delivered', 'disputed']);
+                })
+                ->sum('total_amount');
+                
+            $chartData[] = [
+                'label' => $dayLabel,
+                'revenue' => (float)$revenue,
+                'escrow' => (float)$escrowLocked
+            ];
+        }
+
         return view('merchant.dashboard', compact(
             'store',
             'revenueToday',
@@ -103,7 +134,8 @@ class DashboardController extends Controller
             'escrowFundsLocked',
             'completedOrdersCount',
             'repeatCustomersCount',
-            'recentOrders'
+            'recentOrders',
+            'chartData'
         ));
     }
 

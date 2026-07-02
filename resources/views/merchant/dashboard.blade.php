@@ -126,84 +126,226 @@
                 </div>
             </div>
 
-            <!-- Recent Orders Section -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
-                    <h3 class="font-bold text-lg text-gray-900 dark:text-white">Recent Transactions</h3>
-                    <a href="{{ route('merchant.orders.index') }}" class="text-xs text-indigo-500 hover:underline">View All Orders →</a>
+            <!-- Main Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left 2 Columns (Chart & Recent Orders) -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- 7-Day Analytics Chart -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white">7-Day Sales & Escrow Activity</h3>
+                            <span class="text-xs bg-indigo-50 dark:bg-indigo-950 text-indigo-500 px-3 py-1 rounded-full font-semibold">Live Analytics</span>
+                        </div>
+                        <div class="h-80 relative">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Section -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white">Recent Transactions</h3>
+                            <a href="{{ route('merchant.orders.index') }}" class="text-xs text-indigo-500 hover:underline">View All Orders →</a>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/40 text-xs font-bold text-gray-500 uppercase">
+                                        <th class="px-6 py-4">Order Number</th>
+                                        <th class="px-6 py-4">Customer</th>
+                                        <th class="px-6 py-4">Amount</th>
+                                        <th class="px-6 py-4">Type</th>
+                                        <th class="px-6 py-4">Payment</th>
+                                        <th class="px-6 py-4">Escrow Status</th>
+                                        <th class="px-6 py-4 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
+                                    @forelse($recentOrders as $order)
+                                        <tr class="hover:bg-gray-50/30 dark:hover:bg-gray-900/20">
+                                            <td class="px-6 py-4 font-mono font-bold text-gray-900 dark:text-white">{{ $order->order_number }}</td>
+                                            <td class="px-6 py-4">
+                                                <div class="font-medium text-gray-900 dark:text-white">{{ $order->customer->name }}</div>
+                                                <div class="text-xs text-gray-400">{{ $order->customer->phone }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold">₦{{ number_format($order->total_amount, 2) }}</td>
+                                            <td class="px-6 py-4">
+                                                @if($order->payment_method === 'escrow')
+                                                    <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-teal-400/10 text-teal-400 border border-teal-400/20">Protected</span>
+                                                @else
+                                                    <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-gray-400/10 text-gray-400 border border-gray-400/20">Standard</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if($order->payment_status === 'paid')
+                                                    <span class="text-emerald-500 font-bold">Paid</span>
+                                                @elseif($order->payment_status === 'refunded')
+                                                    <span class="text-rose-500 font-bold">Refunded</span>
+                                                @else
+                                                    <span class="text-gray-400 font-medium">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if($order->payment_method === 'escrow' && $order->escrow)
+                                                    <span class="text-xs font-semibold uppercase tracking-wider
+                                                        @if($order->escrow->status === 'held') text-amber-500
+                                                        @elseif($order->escrow->status === 'shipped') text-indigo-400
+                                                        @elseif($order->escrow->status === 'delivered') text-blue-400
+                                                        @elseif($order->escrow->status === 'released') text-emerald-500
+                                                        @elseif($order->escrow->status === 'disputed') text-rose-500
+                                                        @else text-gray-400
+                                                        @endif
+                                                    ">
+                                                        {{ $order->escrow->status }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-xs text-gray-400">—</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 text-right">
+                                                <a href="{{ route('merchant.orders.show', $order) }}" class="text-indigo-500 hover:underline font-semibold">Manage</a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="px-6 py-10 text-center text-gray-400">
+                                                No orders received yet. Share your store link to start selling!
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/40 text-xs font-bold text-gray-500 uppercase">
-                                <th class="px-6 py-4">Order Number</th>
-                                <th class="px-6 py-4">Customer</th>
-                                <th class="px-6 py-4">Amount</th>
-                                <th class="px-6 py-4">Type</th>
-                                <th class="px-6 py-4">Payment</th>
-                                <th class="px-6 py-4">Escrow Status</th>
-                                <th class="px-6 py-4 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
-                            @forelse($recentOrders as $order)
-                                <tr class="hover:bg-gray-50/30 dark:hover:bg-gray-900/20">
-                                    <td class="px-6 py-4 font-mono font-bold text-gray-900 dark:text-white">{{ $order->order_number }}</td>
-                                    <td class="px-6 py-4">
-                                        <div class="font-medium text-gray-900 dark:text-white">{{ $order->customer->name }}</div>
-                                        <div class="text-xs text-gray-400">{{ $order->customer->phone }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 font-semibold">₦{{ number_format($order->total_amount, 2) }}</td>
-                                    <td class="px-6 py-4">
-                                        @if($order->payment_method === 'escrow')
-                                            <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-teal-400/10 text-teal-400 border border-teal-400/20">Protected</span>
-                                        @else
-                                            <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-gray-400/10 text-gray-400 border border-gray-400/20">Standard</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @if($order->payment_status === 'paid')
-                                            <span class="text-emerald-500 font-bold">Paid</span>
-                                        @elseif($order->payment_status === 'refunded')
-                                            <span class="text-rose-500 font-bold">Refunded</span>
-                                        @else
-                                            <span class="text-gray-400 font-medium">Pending</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @if($order->payment_method === 'escrow' && $order->escrow)
-                                            <span class="text-xs font-semibold uppercase tracking-wider
-                                                @if($order->escrow->status === 'held') text-amber-500
-                                                @elseif($order->escrow->status === 'shipped') text-indigo-400
-                                                @elseif($order->escrow->status === 'delivered') text-blue-400
-                                                @elseif($order->escrow->status === 'released') text-emerald-500
-                                                @elseif($order->escrow->status === 'disputed') text-rose-500
-                                                @else text-gray-400
-                                                @endif
-                                            ">
-                                                {{ $order->escrow->status }}
-                                            </span>
-                                        @else
-                                            <span class="text-xs text-gray-400">—</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('merchant.orders.show', $order) }}" class="text-indigo-500 hover:underline font-semibold">Manage</a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="px-6 py-10 text-center text-gray-400">
-                                        No orders received yet. Share your store link to start selling!
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                <!-- Right 1 Column (Share Store QR & Actions) -->
+                <div class="space-y-8">
+                    <!-- Share Store QR Code Card -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center">
+                        <div class="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-500 mb-4 text-xl">
+                            🔗
+                        </div>
+                        <h3 class="font-bold text-base text-gray-900 dark:text-white mb-1">Share Your Store</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed">
+                            Let customers scan this QR code or use the link below to visit your storefront and check out directly.
+                        </p>
+
+                        <!-- QR Code Image -->
+                        <div class="p-4 bg-white border border-gray-200 dark:border-gray-700 rounded-3xl shadow-sm hover:scale-105 transition-transform duration-300">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode(route('storefront.store', $store->slug)) }}" alt="Store QR Code" class="w-40 h-40">
+                        </div>
+
+                        <!-- Copy Link Inputs -->
+                        <div class="mt-6 w-full space-y-3">
+                            <div class="flex gap-2">
+                                <input type="text" id="storeLinkInput" value="{{ route('storefront.store', $store->slug) }}" class="text-xs bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 w-full text-gray-400 dark:text-gray-400 truncate select-all" readonly>
+                                <button onclick="copyStoreLink()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-indigo-600/10 shrink-0">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
         </div>
     </div>
+
+    <!-- Chart.js and Dashboard JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function copyStoreLink() {
+            const input = document.getElementById('storeLinkInput');
+            input.select();
+            navigator.clipboard.writeText(input.value);
+            alert('Store link copied to clipboard!');
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const chartData = @json($chartData);
+            
+            const labels = chartData.map(item => item.label);
+            const revenues = chartData.map(item => item.revenue);
+            const escrows = chartData.map(item => item.escrow);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Settled Revenue (₦)',
+                            data: revenues,
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.05)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#6366f1',
+                            pointRadius: 4,
+                            tension: 0.35,
+                            fill: true
+                        },
+                        {
+                            label: 'Escrow Locked (₦)',
+                            data: escrows,
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'rgba(20, 184, 166, 0.05)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#14b8a6',
+                            pointRadius: 4,
+                            tension: 0.35,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#9ca3af',
+                                font: {
+                                    family: 'Outfit',
+                                    size: 11,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(156, 163, 175, 0.05)'
+                            },
+                            ticks: {
+                                color: '#9ca3af',
+                                font: {
+                                    family: 'Outfit'
+                                },
+                                callback: function(value) {
+                                    return '₦' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#9ca3af',
+                                font: {
+                                    family: 'Outfit'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>

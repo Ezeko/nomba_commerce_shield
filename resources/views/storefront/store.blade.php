@@ -28,10 +28,17 @@
                     <span class="font-extrabold tracking-tight text-lg">{{ $store->name }}</span>
                 </div>
                 
-                <!-- Trust Score Pill -->
-                <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/20 text-teal-400 text-xs font-bold shadow-lg shadow-teal-500/5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
-                    Trust Score: {{ $store->trust_score }}
+                <div class="flex items-center gap-3">
+                    <!-- Share Button -->
+                    <button onclick="openShareModal()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 text-indigo-400 text-xs font-bold transition-all active:scale-95 shadow-md">
+                        <span>🔗</span> Share Store
+                    </button>
+
+                    <!-- Trust Score Pill -->
+                    <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/20 text-teal-400 text-xs font-bold shadow-lg shadow-teal-500/5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                        Trust Score: {{ $store->trust_score }}
+                    </div>
                 </div>
             </div>
         </header>
@@ -97,5 +104,66 @@
                 @endforelse
             </div>
         </main>
+
+        <!-- Share Modal -->
+        <div id="shareModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 w-full max-w-sm shadow-2xl relative transform scale-95 transition-transform duration-300">
+                <button onclick="closeShareModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-300 text-xl font-bold active:scale-90">
+                    &times;
+                </button>
+                
+                <div class="text-center space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-xl font-bold mx-auto mb-2">
+                        📱
+                    </div>
+                    <h3 class="text-lg font-black text-white">Scan to Shop</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Scan the QR code below using your phone's camera to browse and pay securely via Nomba.
+                    </p>
+
+                    <!-- QR Code -->
+                    <div class="p-4 bg-white border border-slate-800 rounded-3xl shadow-lg inline-block mx-auto">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode(route('storefront.store', $store->slug)) }}" alt="Store QR Code" class="w-40 h-40">
+                    </div>
+
+                    <!-- Store URL Copy Input -->
+                    <div class="space-y-2 mt-4">
+                        <div class="flex gap-2">
+                            <input type="text" id="shareLinkInput" value="{{ route('storefront.store', $store->slug) }}" class="text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 w-full text-slate-400 truncate select-all" readonly>
+                            <button onclick="copyShareLink()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs font-bold rounded-xl transition-all shadow-md shrink-0">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openShareModal() {
+                const modal = document.getElementById('shareModal');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.transform').classList.remove('scale-95');
+                }, 10);
+            }
+
+            function closeShareModal() {
+                const modal = document.getElementById('shareModal');
+                modal.classList.add('opacity-0');
+                modal.querySelector('.transform').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+
+            function copyShareLink() {
+                const input = document.getElementById('shareLinkInput');
+                input.select();
+                navigator.clipboard.writeText(input.value);
+                alert('Store link copied to clipboard!');
+            }
+        </script>
     </body>
 </html>
